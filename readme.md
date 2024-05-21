@@ -26,6 +26,7 @@ pip install PyGithub tqdm
 ```
 
 2. Set your GitHub Personal Access Token as an environment variable:
+Update .env_temp, with your GIT Hub Token, and rename the file to .env
 
 ```python
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', 'YOUR TOKEN HERE')

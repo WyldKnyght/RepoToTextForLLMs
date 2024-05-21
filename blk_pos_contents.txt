@@ -1,0 +1,948 @@
+
+    Prompt: Analyze the blk_pos repository to understand its structure, purpose, and functionality. Follow these steps to study the codebase:
+
+    1. Read the README file to gain an overview of the project, its goals, and any setup instructions.
+
+    2. Examine the repository structure to understand how the files and directories are organized.
+
+    3. Identify the main entry point of the application (e.g., main.py, app.py, index.js) and start analyzing the code flow from there.
+
+    4. Study the dependencies and libraries used in the project to understand the external tools and frameworks being utilized.
+
+    5. Analyze the core functionality of the project by examining the key modules, classes, and functions.
+
+    6. Look for any configuration files (e.g., config.py, .env) to understand how the project is configured and what settings are available.
+
+    7. Investigate any tests or test directories to see how the project ensures code quality and handles different scenarios.
+
+    8. Review any documentation or inline comments to gather insights into the codebase and its intended behavior.
+
+    9. Identify any potential areas for improvement, optimization, or further exploration based on your analysis.
+
+    10. Provide a summary of your findings, including the project's purpose, key features, and any notable observations or recommendations.
+
+    Use the files and contents provided below to complete this analysis:
+    README:
+
+
+Repository Structure: blk_pos
+/.gitignore
+/README.md
+/admin/
+/docs/
+/requirements.txt
+/src/
+/admin/create_folder_structure.py
+/admin/python_info.py
+/docs/Tips for Improving Inventory Management.txt
+/docs/best_practices_pos.txt
+/docs/folder_structure.txt
+/docs/folder_structure_descriptions.md
+/docs/project_plans.txt
+/src/configs/
+/src/controllers/
+/src/main.py
+/src/models/
+/src/ui_event_handlers/
+/src/user_interfaces/
+/src/utils/
+/src/configs/__init__.py
+/src/configs/configs.py
+/src/controllers/__init__.py
+/src/controllers/customer_controller.py
+/src/controllers/dashboard_controller.py
+/src/controllers/home_controller.py
+/src/controllers/inventory_controller.py
+/src/controllers/reports_controller.py
+/src/controllers/sales_controller.py
+/src/controllers/vendor_controller.py
+/src/models/__init__.py
+/src/models/customer.py
+/src/models/database.py
+/src/models/database_setup.py
+/src/models/inventory.py
+/src/models/reports.py
+/src/models/sales.py
+/src/models/vendor.py
+/src/ui_event_handlers/inventory_management.py
+/src/user_interfaces/__init__.py
+/src/user_interfaces/gui_customer.py
+/src/user_interfaces/gui_dashboard.py
+/src/user_interfaces/gui_home_page.py
+/src/user_interfaces/gui_inventory.py
+/src/user_interfaces/gui_reports.py
+/src/user_interfaces/gui_sales.py
+/src/user_interfaces/gui_vendor.py
+/src/utils/__init__.py
+/src/utils/helpers.py
+
+
+File: /.gitignore
+Content: Skipped binary file
+
+File: /README.md
+Content: Skipped due to unsupported encoding
+
+File: admin/create_folder_structure.py
+Content (utf-8 Decoded):
+import os
+from treelib import Tree
+import datetime
+
+def generate_folder_structure(root_dir, output_file=None, excluded_dirs=None):
+    tree = Tree()
+    tree.create_node(root_dir, root_dir)  # Create the root node
+
+    # Convert excluded_dirs to a set (if it's not already)
+    excluded_dirs = set(excluded_dirs) if excluded_dirs else set()
+
+    def add_to_tree(directory, parent):
+        for item in os.listdir(directory):
+            item_path = os.path.join(directory, item)
+            if os.path.isdir(item_path):
+                if item in excluded_dirs:
+                    continue
+                node = tree.create_node(item, item_path, parent=parent)
+                add_to_tree(item_path, node)
+            else:
+                # Add files to the tree
+                file_name = os.path.basename(item_path)
+                tree.create_node(file_name, item_path, parent=parent)
+
+    # Call the add_to_tree function here
+    add_to_tree(root_dir, root_dir)  # Build the tree structure
+
+    if output_file:
+        with open(output_file, "w", encoding="utf-8") as file:
+            file.write(str(tree))
+
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"\nScript last modified: {timestamp}")
+    if output_file:
+        with open(output_file, "a", encoding="utf-8") as file:
+            file.write(f"\nScript last modified: {timestamp}")
+
+if __name__ == "__main__":
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    docs_dir = os.path.join(project_root, "docs")
+    os.makedirs(docs_dir, exist_ok=True)  # Create docs directory if it doesn't exist
+    output_filename = os.path.join(docs_dir, "folder_structure.txt")
+    excluded_dirs = {".git", ".chainlit", ".venv",".vs",".my_files",".idea", "__pycache__", 
+                     "gradio_cached_examples", ".github", "test", "admin", "data", ".vscode"}
+
+    print(f"Project Folder Structure for: {project_root}")
+    generate_folder_structure(project_root, output_file=output_filename, excluded_dirs=excluded_dirs)
+
+
+File: admin/python_info.py
+Content (utf-8 Decoded):
+import sys
+print("Python version: ", sys.version)
+print("Directory where python files are installed: ", sys.base_prefix)
+print("Directory of virtual environment(if any): ", sys.prefix)
+print("Location of python executable: ", sys.executable)
+print("Path to libraries: ", *sys.path, sep="\n\t")
+
+File: docs/Tips for Improving Inventory Management.txt
+Content (utf-8 Decoded):
+Effective inventory management starts with having best practices in place. 
+Making some slight changes to your inventory management process is easy and worth the investment of resources. 
+Here are just a few ways you can improve your practices:
+
+1. Use insights to inform decisions like reordering and pricing
+    Like ABC analysis, sales data reports are invaluable for decision-making. These insights can provide information regarding which of your products are popular, simply aren’t selling, or are moving slowly.
+
+    When you see the most sales based on customer demand and seasonality, you get in-depth inventory analysis. This data can then be used to base decisions on facts instead of assumptions and estimates.
+
+    Better inventory control can help you:
+        - Keep track of inventory counts across all sales channels
+        - Time reorders
+        - Optimize order quantity
+        - Reduce carrying costs
+        - Improve cash flow
+        - Increase profitability
+
+2. Automate as much as possible
+    Inventory management can be time-consuming, especially if you’re dealing with high sales volumes. One way to cut down the demand that inventory management places on your time and personnel is to automate as many aspects of the process as possible. This could include:
+
+    - Automating inventory level updates across platforms
+    - Uploading new products into the system
+    - Completing purchase orders
+    - Automating confirmation emails and invoices
+    
+    Having your team go through inventory with barcode scanners might be effective. However, automation will save you a lot of time and money, and it will improve accuracy.
+
+3. Use order tracking
+    However your inventory management system is set up—whether it’s a spreadsheet or software—careful order tracking is essential. By organizing all that data into easily accessible and useful lists, you can easily filter orders that:
+
+    - Have been paid
+    - Haven’t been paid
+    - Are overdue
+    - Haven’t been fulfilled yet
+    With a more organized system for order tracking, you’ll have a clear view of order statuses and a better handle of order fulfillment overall. And, with order tracking, you’ll be able to provide your customers with updates.
+
+4. Focus on consistency and process
+    One of the best things you can do to make inventory management run more smoothly is to follow consistent processes across the board. This is especially true if you have multiple team members involved in inventory control. Whether it’s how you go about managing physical inventory, updating inventory tracking, restocking, or adding new inventory to your sites, consistency is key. Otherwise, you may run into issues like inaccurate data, having too little or excess inventory, or displeased customers.
+
+    Establish an inventory management process that everyone can easily follow to keep everything running smoothly.
+
+5. Streamline internal communication
+    Oftentimes, mistakes are made due to poor communication. By implementing systems that can help streamline communication in your business, you can ensure everyone is on the same page. It will also help you significantly cut down on errors.
+
+    Keep your whole team in the loop with real-time status updates and periodic action emails. Depending on how your business operates, you may want to send these action emails weekly or daily. This ensures your team is receiving the information they need, when they expect it.
+
+6. Update your inventory management system
+    When it comes to inventory control, manual data entry and a disjointed process may be a downfall. However, with inventory management software that’s built for small businesses like yours, you can easily overcome these challenges.
+
+    - Automate virtually all aspects of inventory management
+    - Easily track inventory, manage orders, and improve fulfillment across all of your online stores
+    - Help you identify the right level of safety stock so you can account for lead time and avoid stockouts
+    - List and manage products across all of your e-commerce platforms like Amazon and Shopify
+    - Automatically update the amount of inventory available
+    - Keep inventory information organized and up to date for all your SKUs
+    - Add and manage more sales channels so you can expand your reach and sell more
+    - Generate powerful reports that provide key insights into sales
+    - Streamline bookkeeping with QuickBooks Online accounting integration
+
+When you use an effective inventory management software, you improve these processes and your efficiency.
+
+This opens up more time for you to focus on growing your business.
+
+Implement These Changes and Strengthen Your Business’s Inventory Management
+The best way to manage inventory varies from business to business, but these tips can only improve your current processes. Refining your inventory management strategies might seem like a large undertaking, but with the right tools, it can be fairly simple.
+
+File: docs/best_practices_pos.txt
+Content (utf-8 Decoded):
+After researching online, I've compiled a list of best practices for a point-of-sale (POS) system for a small online business. I'll also provide a project plan to develop a simple POS for a home-based business.
+
+**Best Practices for a POS System:**
+
+1. **Security:**
+	* Implement end-to-end encryption for payment processing.
+	* Use secure protocols for data transmission (HTTPS, TLS).
+	* Regularly update and patch the POS software and operating system.
+	* Use strong passwords and two-factor authentication.
+2. **Inventory Management:**
+	* Implement a real-time inventory tracking system.
+	* Use barcode scanning or RFID tags for efficient inventory management.
+	* Set up low stock alerts and automatic reorder points.
+3. **Order Management:**
+	* Implement a centralized order management system.
+	* Use automated workflows for order processing and fulfillment.
+	* Provide real-time order tracking and updates.
+4. **Customer Management:**
+	* Implement a customer relationship management (CRM) system.
+	* Store customer data securely and comply with data protection regulations.
+	* Use customer data for targeted marketing and loyalty programs.
+5. **Reporting and Analytics:**
+	* Implement a reporting and analytics system for sales, revenue, and customer behavior.
+	* Use data to identify trends, opportunities, and areas for improvement.
+	* Provide real-time insights and dashboards for business owners.
+6. **Integration:**
+	* Integrate the POS system with other business systems (e.g., accounting, inventory management).
+	* Use APIs and SDKs for seamless integration with third-party services.
+	* Implement a unified commerce platform for omnichannel sales.
+7. **User Experience:**
+	* Design an intuitive and user-friendly interface for employees and customers.
+	* Implement a mobile-friendly POS system for on-the-go transactions.
+	* Provide training and support for employees to ensure efficient use of the POS system.
+
+**Project Plan to Develop a Simple POS for a Home-Based Business:**
+
+**Project Title:** Simple POS for Home-Based Business
+
+**Project Objective:** Develop a simple, secure, and user-friendly POS system for a home-based business.
+
+**Project Scope:**
+
+* Develop a web-based POS system using PHP, JavaScript, and MySQL.
+* Implement inventory management, order management, and customer management features.
+* Integrate payment processing with a third-party payment gateway.
+* Design a user-friendly interface for employees and customers.
+
+**Project Timeline:** 12 weeks
+
+**Project Phases:**
+
+**Phase 1: Planning and Requirements Gathering (Weeks 1-2)**
+
+* Define project scope and objectives.
+* Gather requirements from the business owner.
+* Create a detailed project plan and timeline.
+
+**Phase 2: Design and Prototyping (Weeks 3-4)**
+
+* Design the database schema and data models.
+* Create wireframes and prototypes of the POS system.
+* Develop a functional specification document.
+
+**Phase 3: Development (Weeks 5-8)**
+
+* Develop the POS system using PHP, JavaScript, and MySQL.
+* Implement inventory management, order management, and customer management features.
+* Integrate payment processing with a third-party payment gateway.
+
+**Phase 4: Testing and Quality Assurance (Weeks 9-10)**
+
+* Conduct unit testing, integration testing, and end-to-end testing.
+* Perform security testing and vulnerability assessments.
+* Conduct user acceptance testing (UAT) with the business owner.
+
+**Phase 5: Deployment and Maintenance (Weeks 11-12)**
+
+* Deploy the POS system to a production environment.
+* Provide training and support to the business owner and employees.
+* Perform regular security updates and maintenance.
+
+**Project Deliverables:**
+
+* A functional and secure POS system.
+* A user-friendly interface for employees and customers.
+* A detailed user manual and training documentation.
+* A maintenance and support plan.
+
+**Project Budget:** $10,000 - $15,000
+
+**Project Resources:**
+
+* 1 full-time developer.
+* 1 part-time
+
+File: docs/folder_structure.txt
+Content (utf-8 Decoded):
+m:\dev_env\blk-pos
+├── README.md
+├── database
+├── docs
+│   └── folder_structure_descriptions.md
+├── requirements.txt
+└── src
+    ├── configs
+    │   ├── __init__.py
+    │   └── config.py
+    ├── controllers
+    │   ├── __init__.py
+    │   ├── customer_controller.py
+    │   ├── dashboard_controller.py
+    │   ├── home_controller.py
+    │   ├── inventory_controller.py
+    │   ├── reports_controller.py
+    │   ├── sales_controller.py
+    │   └── vendor_controller.py
+    ├── main.py
+    ├── models
+    │   ├── __init__.py
+    │   ├── customer.py
+    │   ├── database.py
+    │   ├── inventory.py
+    │   ├── reports.py
+    │   ├── sales.py
+    │   └── vendor.py
+    ├── utils
+    │   ├── __init__.py
+    │   └── helpers.py
+    └── views
+        ├── __init__.py
+        ├── customer_management.py
+        ├── dashboard_management.py
+        ├── home_page.py
+        ├── inventory_management.py
+        ├── reports_management.py
+        ├── sales_management.py
+        └── vendor_management.py
+
+Script last modified: 2024-04-30 16:56:56
+
+File: docs/folder_structure_descriptions.md
+Content (utf-8 Decoded):
+Here's a brief explanation of each folder/file:
+
+Summary
+Project Root: Contains high-level files like requirements.txt and README.md.
+src/: The source code folder, containing all the Python code.
+    main.py: The entry point of the application, responsible for launching the GUI.
+    models/: Data models and database-related code.
+    views/: GUI-related code.
+    controllers/: Business logic and controller code.
+    utils/: Utility functions and helpers.
+    configs/: Configuration files.
+docs/: Documentation files.
+admin/: Project admin files.
+database/: Database files.
+
+#####
+
+Project Root:
+requirements.txt: A list of dependencies required by the application.
+README.md: A brief introduction to the project and its structure.
+
+src/:
+    main.py: The entry point of our application, responsible for launching the GUI.
+
+    src/models/: This folder contains data models and database-related code.
+        database.py: Database connection and schema definitions.
+        
+        Data models for each feature section.
+        inventory.py, sales.py, vendor.py, customer.py, reports.py: 
+
+    src/views/: This folder contains GUI-related code.
+        The home page GUI component.
+        gui_home_page.py
+        GUI components for each feature section. 
+        gui_dashboard.py, gui_inventory.py, gui_sales.py, gui_vendor.py, gui_customer.py, gui_reports.py
+
+    src/controllers/: This folder contains business logic and controller code.
+        Controller for the home page.
+        home_controller.py: 
+        Controllers for each feature section.
+        dashboard_controller.py, inventory_controller.py, sales_controller.py, vendor_controller.py, customer_controller.py, reports_controller.py: 
+
+    src/utils/: This folder contains utility functions and helpers.
+        helpers.py: General-purpose helper functions.
+
+    src/configs/: This folder contains configuration files.
+        config.py: Configuration settings for the application.
+
+docs/: This folder contains documentation files.
+
+admin/: This folder contains the project admin files.
+
+database/: This folder contains the database files.
+
+Guidelines and Best Practices:
+These guidelines will keep the code organized and easy to maintain as the project grows.
+    Start with small modules in single files.
+    Once you have many related files or a large one, move it inside a folder and break it up into smaller files.
+    Keep files under a certain number of lines of code (LoC) to maintain readability and maintainability.
+    Use an entry point with __main__.py to define the application's entry point.
+
+File: docs/project_plans.txt
+Content (utf-8 Decoded):
+Based on your requirements, I'll provide a simplified project plan to develop a POS system for local use, with the ability to add web-based functions at a later date.
+
+**Project Title:** Local POS System for Home-Based Business
+
+**Project Objective:** Develop a simple, user-friendly POS system for a home-based business, using Python and related packages.
+
+**Project Scope:**
+
+* Develop a local POS system for two owners (husband and wife) with a single login and password protection.
+* Implement inventory management, order management, and customer management features.
+* Design a user-friendly interface for employees, similar to a fancy Excel spreadsheet with a dashboard.
+
+**Project Timeline:** 8 weeks
+
+**Project Phases:**
+
+**Phase 1: Setting up the Environment (Week 1)**
+
+* Set up the development environment with Python, PyCharm, and necessary packages (e.g., Tkinter for GUI, SQLite for database).
+* Install and configure the necessary dependencies.
+
+**Phase 2: Building the GUI (Week 2)**
+
+* Design and build the graphical user interface (GUI) using Tkinter.
+* Create a simple and intuitive interface with a dashboard, similar to a fancy Excel spreadsheet.
+
+**Phase 3: Creating the Database (Week 3)**
+
+* Design and create a database using SQLite to store inventory, orders, and customer information.
+* Implement data models and schema for the database.
+
+**Phase 4: Implementing Inventory Management (Week 4)**
+
+* Implement inventory management features, including:
+	+ Adding and editing products.
+	+ Tracking stock levels and low stock alerts.
+	+ Generating reports for inventory management.
+
+**Phase 5: Implementing Order Management (Week 5)**
+
+* Implement order management features, including:
+	+ Creating and managing orders.
+	+ Tracking order status and history.
+	+ Generating reports for order management.
+
+**Phase 6: Implementing Customer Management (Week 6)**
+
+* Implement customer management features, including:
+	+ Adding and editing customer information.
+	+ Tracking customer orders and history.
+	+ Generating reports for customer management.
+
+**Phase 7: Implementing Billing System (Week 7)**
+
+* Implement a simple billing system, including:
+	+ Calculating total prices and taxes.
+	+ Generating invoices and receipts.
+
+**Phase 8: Testing and Deployment (Week 8)**
+
+* Conduct unit testing, integration testing, and end-to-end testing.
+* Deploy the POS system to a local environment.
+* Provide training and support to the business owners.
+
+**Project Deliverables:**
+
+* A functional and user-friendly POS system for local use.
+* A simple and intuitive interface with a dashboard.
+* A database with inventory, order, and customer management features.
+* A billing system with calculation and invoicing capabilities.
+
+**Project Budget:** $5,000 - $7,000
+
+**Project Resources:**
+
+* 1 full-time developer with Python experience.
+* PyCharm IDE and necessary packages.
+* SQLite database management system.
+
+By following this project plan, you'll have a simple and functional POS system for your home-based business, with the ability to add web-based functions at a later date.
+~~~
+Based on the advice you found, it's recommended to start with both the database schema and the GUI simultaneously, and then work towards the point where they meet. This approach is often referred to as a "meet-in-the-middle" approach.
+
+Here's a breakdown of why this approach makes sense:
+
+**Database Schema:**
+
+* Starting with the database schema helps you define the structure and organization of your data.
+* It forces you to think about the relationships between different data entities and how they'll be stored.
+* Having a solid database schema in place will make it easier to implement the GUI and business logic later on.
+
+**GUI:**
+
+* Starting with the GUI helps you define the user interface and user experience.
+* It forces you to think about how the user will interact with the system and what features are required.
+* Having a solid GUI design in place will make it easier to implement the business logic and database interactions later on.
+
+**Meet-in-the-Middle:**
+
+* By working on both the database schema and GUI simultaneously, you can ensure that they're aligned and compatible.
+* As you work on each component, you'll naturally reach a point where they need to interact with each other.
+* This is where the business logic comes in, and you can implement the necessary code to connect the GUI to the database schema.
+
+By following this approach, you'll avoid the pitfalls of starting with either the database or GUI alone, which can lead to:
+
+* A database schema that's not well-suited for the GUI's needs.
+* A GUI that's not well-suited for the database schema's structure.
+
+So, to answer your question, the best place to start is with both the database schema and GUI, and then work towards the point where they meet.
+
+
+Features:
+Inventory optimization
+Multi-channel management
+Reorder management
+Product identification
+Reporting/Analytics
+Mobile access
+Retail inventory management
+
+File: /requirements.txt
+Content (utf-8 Decoded):
+treelib
+dotenv
+
+
+File: src\configs/__init__.py
+Content: Skipped due to unsupported encoding
+
+File: src\configs/configs.py
+Content (utf-8 Decoded):
+# ./src/configs/configs.py
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+class AppConfig:
+    BUSINESS_NAME = os.getenv('BUS_NAME')
+    FONT_FAMILY = "Arial"
+    FONT_SIZE = 18
+    COPYRIGHT_YEAR = 2024
+    COPYRIGHT_TEXT = os.getenv('BUS_NAME')
+    TAB_SPACING = 5
+    HEADER_BG_COLOR = "gray"
+    FOOTER_BG_COLOR = "gray"
+
+class DatabaseConfig:
+    DATABASE_PATH = os.getenv('DB_PATH')
+    DATABASE_FILE = os.getenv('DB_FILENAME')
+
+
+File: src\controllers/__init__.py
+Content: Skipped due to unsupported encoding
+
+File: src\controllers/customer_controller.py
+Content: Skipped due to unsupported encoding
+
+File: src\controllers/dashboard_controller.py
+Content: Skipped due to unsupported encoding
+
+File: src\controllers/home_controller.py
+Content (utf-8 Decoded):
+from user_interfaces.gui_home_page import HomePage
+from src.models.database import Database
+from configs.configs import DatabaseConfig
+
+database =f"{DatabaseConfig.DATABASE_PATH}/{DatabaseConfig.DATABASE_FILE}"
+
+class HomeController:
+    def __init__(self, root):
+        self.root = root
+        self.home_page = HomePage(root)
+        self.database = Database(database)
+
+    def add_product_to_inventory(self, product, quantity, reorder_point, reorder_quantity):
+        self.database.add_product_to_inventory(product, quantity, reorder_point, reorder_quantity)
+        self.home_page.refresh_inventory()
+
+    def get_inventory(self):
+        return self.database.get_inventory()
+
+
+File: src\controllers/inventory_controller.py
+Content: Skipped due to unsupported encoding
+
+File: src\controllers/reports_controller.py
+Content: Skipped due to unsupported encoding
+
+File: src\controllers/sales_controller.py
+Content: Skipped due to unsupported encoding
+
+File: src\controllers/vendor_controller.py
+Content: Skipped due to unsupported encoding
+
+File: src/main.py
+Content (utf-8 Decoded):
+# ./src/main.py
+
+import tkinter as tk
+from src.controllers.home_controller import HomeController
+from ui_event_handlers.inventory_management import InventoryPage
+
+def main():
+    root = tk.Tk()
+    home_controller = HomeController(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
+
+
+File: src\models/__init__.py
+Content: Skipped due to unsupported encoding
+
+File: src\models/customer.py
+Content: Skipped due to unsupported encoding
+
+File: src\models/database.py
+Content (utf-8 Decoded):
+# ./src/models/database.py
+
+import sqlite3
+from configs.configs import DatabaseConfig
+
+db_path = f"{DatabaseConfig.DATABASE_PATH}/{DatabaseConfig.DATABASE_FILE}"
+
+class Database:
+    def __init__(self, db_path):
+        self.conn = sqlite3.connect(db_path)
+        self.cursor = self.conn.cursor()
+
+    def create_tables(self):
+        # create tables for inventory, sales, vendors, customers, reports
+        pass
+
+    def add_product_to_inventory(self, product, quantity, reorder_point, reorder_quantity):
+        # add product to inventory table
+        pass
+
+    def get_inventory(self):
+        # retrieve inventory data
+        pass
+
+    def close(self):
+        self.conn.close()
+
+
+
+File: src\models/database_setup.py
+Content (utf-8 Decoded):
+# ./src/models/database_setup.py
+
+import sqlite3
+from configs.configs import DatabaseConfig
+
+class Database:
+    def __init__(self):
+        self.conn = sqlite3.connect(f"{DatabaseConfig.DATABASE_PATH}/{DatabaseConfig.DATABASE_FILE}")
+        self.cursor = self.conn.cursor()
+
+    def create_tables(self):
+        tables = [
+            '''
+            CREATE TABLE IF NOT EXISTS Products (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                description TEXT,
+                category TEXT,
+                unit_price REAL NOT NULL,
+                unit_cost REAL NOT NULL,
+                sku TEXT NOT NULL
+            );
+            ''',
+            '''
+            CREATE TABLE IF NOT EXISTS Inventory (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                product_id INTEGER NOT NULL,
+                quantity INTEGER NOT NULL,
+                reorder_point INTEGER NOT NULL,
+                reorder_quantity INTEGER NOT NULL,
+                last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (product_id) REFERENCES Products(id)
+            );
+            ''',
+            '''
+            CREATE TABLE IF NOT EXISTS Suppliers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                address TEXT,
+                contact TEXT
+            );
+            ''',
+            '''
+            CREATE TABLE IF NOT EXISTS PurchaseOrders (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                supplier_id INTEGER NOT NULL,
+                order_date DATE NOT NULL,
+                expected_delivery_date DATE,
+                total_cost REAL NOT NULL,
+                FOREIGN KEY (supplier_id) REFERENCES Suppliers(id)
+            );
+            ''',
+            '''
+            CREATE TABLE IF NOT EXISTS OrderItems (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                purchase_order_id INTEGER NOT NULL,
+                product_id INTEGER NOT NULL,
+                quantity INTEGER NOT NULL,
+                unit_cost REAL NOT NULL,
+                FOREIGN KEY (purchase_order_id) REFERENCES PurchaseOrders(id),
+                FOREIGN KEY (product_id) REFERENCES Products(id)
+            );
+            ''',
+            '''
+            CREATE TABLE IF NOT EXISTS Sales (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                customer_id INTEGER NOT NULL,
+                sale_date DATE NOT NULL,
+                total_revenue REAL NOT NULL
+            );
+            ''',
+            '''
+            CREATE TABLE IF NOT EXISTS SaleItems (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                sale_id INTEGER NOT NULL,
+                product_id INTEGER NOT NULL,
+                quantity INTEGER NOT NULL,
+                unit_price REAL NOT NULL,
+                FOREIGN KEY (sale_id) REFERENCES Sales(id),
+                FOREIGN KEY (product_id) REFERENCES Products(id)
+            );
+            ''',
+            '''
+            CREATE TABLE IF NOT EXISTS Customers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                address TEXT,
+                contact TEXT
+            );
+            '''
+        ]
+
+        for table in tables:
+            self.cursor.execute(table)
+
+        self.conn.commit()
+        self.conn.close()
+
+if __name__ == '__main__':
+    db = Database()
+    db.create_tables()
+
+
+File: src\models/inventory.py
+Content: Skipped due to unsupported encoding
+
+File: src\models/reports.py
+Content: Skipped due to unsupported encoding
+
+File: src\models/sales.py
+Content: Skipped due to unsupported encoding
+
+File: src\models/vendor.py
+Content: Skipped due to unsupported encoding
+
+File: src\ui_event_handlers/inventory_management.py
+Content (utf-8 Decoded):
+# ./src/ui_event_handlers/inventory_management.py
+import tkinter as tk
+from tkinter import messagebox
+from user_interfaces.gui_inventory import InventoryGUI
+from configs.configs import DatabaseConfig
+import sqlite3
+
+class InventoryPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.init_ui()
+
+    def init_ui(self):
+        self.inventory_gui = InventoryGUI(self, self.refresh_inventory, self.add_product)
+        self.inventory_gui.pack(fill=tk.BOTH, expand=1)
+
+    def refresh_inventory(self):
+        # Implement refresh_inventory logic here
+        pass
+
+    def add_product(self):
+        # Implement add_product logic here
+        pass
+
+File: src\user_interfaces/__init__.py
+Content: Skipped due to unsupported encoding
+
+File: src\user_interfaces/gui_customer.py
+Content (utf-8 Decoded):
+# ./src/views/customer_management.py
+
+def customer_page(self):
+    # Code to display the customer management page
+    pass
+
+File: src\user_interfaces/gui_dashboard.py
+Content (utf-8 Decoded):
+# ./src/views/dashboard_management.py
+
+def dashboard_page(self):
+    # Code to display the dashboard page
+    pass
+
+File: src\user_interfaces/gui_home_page.py
+Content (utf-8 Decoded):
+# ./src/views/home_page.py
+from tkinter import *
+import tkinter as tk
+from tkinter import ttk
+from configs.configs import AppConfig
+
+class HomePage:
+    def __init__(self, master):
+        self.master = master
+
+        # Header
+        header_frame = tk.Frame(self.master, bg=AppConfig.HEADER_BG_COLOR)
+        header_frame.pack(fill="x")
+        tk.Label(header_frame, text=AppConfig.BUSINESS_NAME, font=(AppConfig.FONT_FAMILY, AppConfig.FONT_SIZE)).pack(side="left")
+        tk.Button(header_frame, text="Logout", command=self.master.destroy).pack(side="right")
+
+        # Tabs
+        tab_frame = tk.Frame(self.master)
+        tab_frame.pack(fill="x")
+
+        self.dashboard_tab = tk.Button(tab_frame, text="Dashboard", command=self.dashboard_page)
+        self.dashboard_tab.pack(side="left", padx=AppConfig.TAB_SPACING)
+
+        self.inventory_tab = tk.Button(tab_frame, text="Inventory Management", command=self.inventory_page)
+        self.inventory_tab.pack(side="left", padx=AppConfig.TAB_SPACING)
+
+        self.sales_tab = tk.Button(tab_frame, text="Sales Management", command=self.sales_page)
+        self.sales_tab.pack(side="left", padx=AppConfig.TAB_SPACING)
+
+        self.vendor_tab = tk.Button(tab_frame, text="Vendor Management", command=self.vendor_page)
+        self.vendor_tab.pack(side="left", padx=AppConfig.TAB_SPACING)
+
+        self.customer_tab = tk.Button(tab_frame, text="Customer Management", command=self.customer_page)
+        self.customer_tab.pack(side="left", padx=AppConfig.TAB_SPACING)
+
+        self.reports_tab = tk.Button(tab_frame, text="Reports", command=self.reports_page)
+        self.reports_tab.pack(side="left", padx=AppConfig.TAB_SPACING)
+
+        # Footer
+        footer_frame = tk.Frame(self.master, bg=AppConfig.FOOTER_BG_COLOR)
+        footer_frame.pack(fill="x")
+        tk.Label(footer_frame, text=f"Copyright {AppConfig.COPYRIGHT_YEAR} {AppConfig.COPYRIGHT_TEXT}").pack(side="left")
+
+
+File: src\user_interfaces/gui_inventory.py
+Content (utf-8 Decoded):
+# ./src/views/gui_inventory.py
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+
+class InventoryGUI(tk.Frame):
+    def __init__(self, parent, refresh_callback, add_product_callback):
+        tk.Frame.__init__(self, parent)
+        self.parent = parent
+        self.refresh_callback = refresh_callback
+        self.add_product_callback = add_product_callback
+        self.init_ui()
+
+    def init_ui(self):
+        self.inventory_tree = ttk.Treeview(self)
+        self.inventory_tree["columns"] = ("Product", "Quantity", "Reorder Point", "Reorder Quantity")
+        self.inventory_tree.column("#0", width=0, stretch=tk.NO)
+        self.inventory_tree.column("Product", anchor=tk.W, width=200)
+        self.inventory_tree.column("Quantity", anchor=tk.W, width=100)
+        self.inventory_tree.column("Reorder Point", anchor=tk.W, width=100)
+        self.inventory_tree.column("Reorder Quantity", anchor=tk.W, width=100)
+        self.inventory_tree.heading("#0", text="", anchor=tk.W)
+        self.inventory_tree.heading("Product", text="Product", anchor=tk.W)
+        self.inventory_tree.heading("Quantity", text="Quantity", anchor=tk.W)
+        self.inventory_tree.heading("Reorder Point", text="Reorder Point", anchor=tk.W)
+        self.inventory_tree.heading("Reorder Quantity", text="Reorder Quantity", anchor=tk.W)
+
+        self.inventory_tree.pack(fill=tk.BOTH, expand=1)
+
+        self.refresh_button = ttk.Button(self, text="Refresh", command=self.refresh_callback)
+        self.refresh_button.pack(fill=tk.X, padx=10, pady=10)
+
+        self.add_button = ttk.Button(self, text="Add Product", command=self.add_product_callback)
+        self.add_button.pack(fill=tk.X, padx=10, pady=10)
+
+File: src\user_interfaces/gui_reports.py
+Content: Skipped due to unsupported encoding
+
+File: src\user_interfaces/gui_sales.py
+Content (utf-8 Decoded):
+# ./src/views/sales_management.py
+
+def sales_page(self):
+    # Code to display the sales management page
+    pass
+
+File: src\user_interfaces/gui_vendor.py
+Content (utf-8 Decoded):
+# ./src/views/vendor_management.py
+
+def vendor_page(self):
+    # Code to display the vendor management page
+    pass
+
+File: src\utils/__init__.py
+Content: Skipped due to unsupported encoding
+
+File: src\utils/helpers.py
+Content (utf-8 Decoded):
+def validate_input(data):
+    # validate input data
+    pass
+
+def show_error(message):
+    # show error message
+    pass
+
+
